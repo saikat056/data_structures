@@ -1,3 +1,6 @@
+require 'color'
+require 'node'
+
 class RedBlackTree
   attr_accessor :nil_node, :root
   def initialize
@@ -264,34 +267,3 @@ class RedBlackTree
   end
 end
 
-module Color
-  RED = 0
-  BLACK = 1
-end
-
-class Node
-  attr_accessor :color, :key, :left, :right, :p
-  def initialize(k)
-    @key = k
-  end
-  
-  def has_no_children?
-    (left.key == nil) && (right.key == nil)
-  end
-
-  def has_no_left_child?
-    left.key == nil
-  end
-  
-  def has_no_right_child?
-    right.key == nil
-  end
-  
-  def is_left_child_of_parent?
-    self == p.left
-  end
-
-  def is_right_child_of_parent?
-    self == p.right
-  end
-end
