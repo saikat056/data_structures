@@ -29,11 +29,11 @@ RSpec.describe RedBlackTree do
 
   describe "#lower_key" do
     it "returns lower_key for a value" do
-      expect(red_black_tree.lower_key(1)).to eql(nil)
+      expect(red_black_tree.lower_key(1)).to eql(1)
       expect(red_black_tree.lower_key(5)).to eql(1)
       expect(red_black_tree.lower_key(9)).to eql(8.8)
-      expect(red_black_tree.lower_key(8.8)).to eql(8)
-      expect(red_black_tree.lower_key(7)).to eql(5)
+      expect(red_black_tree.lower_key(8.8)).to eql(8.8)
+      expect(red_black_tree.lower_key(7)).to eql(7)
       expect(red_black_tree.lower_key(100)).to eql(9)
       expect(red_black_tree.lower_key(6)).to eql(5)
     end
@@ -53,13 +53,20 @@ RSpec.describe RedBlackTree do
 
   describe "#higher_key" do
     it "returns higher_key for a value" do
-      expect(red_black_tree.higher_key(1)).to eql(5)
+      expect(red_black_tree.higher_key(1)).to eql(1)
       expect(red_black_tree.higher_key(5)).to eql(7)
-      expect(red_black_tree.higher_key(9)).to eql(nil)
-      expect(red_black_tree.higher_key(8.8)).to eql(9)
-      expect(red_black_tree.higher_key(7)).to eql(8)
+      expect(red_black_tree.higher_key(9)).to eql(9)
+      expect(red_black_tree.higher_key(8.8)).to eql(8.8)
+      expect(red_black_tree.higher_key(7)).to eql(7)
       expect(red_black_tree.higher_key(100)).to eql(nil)
       expect(red_black_tree.higher_key(6)).to eql(7)
+    end
+
+    it "returns higher value for short array" do
+      rb_tree = RedBlackTree.new
+      rb_tree.insert(Node.new(4))
+      rb_tree.insert(Node.new(1))
+      expect(rb_tree.higher_key(1)).to eql(1)
     end
   end
 
@@ -76,4 +83,5 @@ RSpec.describe RedBlackTree do
       expect(red_black_tree.ceiling_key(6)).to eql(7)
     end
   end
+
 end

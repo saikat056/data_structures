@@ -209,6 +209,7 @@ class RedBlackTree
   end
 
   def find_root_with_operator(key, node, op, child_order)
+    return node.key if [:<=, :>=].include?(op) && key == node.key
     return node.p.key if node.send("is_#{child_order}_child_of_parent?")
     node = node.p while ((node.key != nil) && (key.send(op, node.key)))
     node.key
