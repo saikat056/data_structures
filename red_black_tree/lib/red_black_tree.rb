@@ -32,19 +32,19 @@ class RedBlackTree
   end
 
   def flooring_key(key)
-    find_key_with_operator(key, :<)
+    find_key_with_operator(key, :>=)
   end
 
   def lower_key(key)
-    find_key_with_operator(key, :<=)
-  end
-
-  def ceiling_key(key)
     find_key_with_operator(key, :>)
   end
 
+  def ceiling_key(key)
+    find_key_with_operator(key, :<=)
+  end
+
   def higher_key(key)
-    find_key_with_operator(key, :>=)
+    find_key_with_operator(key, :<)
   end
 
   def insert(z)
@@ -182,36 +182,35 @@ class RedBlackTree
   def find_key_with_operator(key, op)
     return nil if root == nil_node
     return nil unless [:<, :<=, :>, :>=].include?(op)
-    key_order, first_child, second_child  = ([:<, :<=].include?(op)) ? [:lower, :left, :right] : [:higher, :right, :left]
-    return (key.send(op, root.key) ? nil : root.key) if root.has_no_children?
+    key_order, first_child, second_child  = ([:>, :>=].include?(op)) ? [:lower, :left, :right] : [:higher, :right, :left]
+    return (key.send(op, root.key) ? root.key : nil) if root.has_no_children?
 
     node = root
     while(node) do
       if key.send(op, node.key)
-        return send("find_#{key_order}_root_with_operator", key, node, op) if node.send("has_no_#{first_child}_child?")
-        node = node.send(first_child)
-      else
         return node.key if node.send("has_no_#{second_child}_child?")
         node = node.send(second_child)
+      else
+        return send("find_#{key_order}_root_with_operator", key, node, op) if node.send("has_no_#{first_child}_child?")
+        node = node.send(first_child)
       end
     end
     nil
   end
 
   def find_lower_root_with_operator(key, node, op)
-    return nil unless [:<, :<=].include?(op)
+    return nil unless [:>, :>=].include?(op)
     find_root_with_operator(key, node, op, :right)
   end
 
   def find_higher_root_with_operator(key, node, op)
-    return nil unless [:>, :>=].include?(op)
+    return nil unless [:<, :<=].include?(op)
     find_root_with_operator(key, node, op, :left)
   end
 
   def find_root_with_operator(key, node, op, child_order)
     return node.key if [:<=, :>=].include?(op) && key == node.key
-    return node.p.key if node.send("is_#{child_order}_child_of_parent?")
-    node = node.p while ((node.key != nil) && (key.send(op, node.key)))
+    node = node.p while ((node.key != nil) && !(key.send(op, node.key)))
     node.key
   end
 
