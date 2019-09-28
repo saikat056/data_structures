@@ -62,6 +62,24 @@ RSpec.describe RedBlackTree do
       expect(rb_tree.lower_key(0.5)).to eql(nil)
       expect(rb_tree.lower_key(100)).to eql(6)
     end
+
+    it "returns lower value for a tree with one element" do
+      rb_tree = RedBlackTree.new
+      rb_tree.insert(Node.new(4))
+      expect(rb_tree.lower_key(1)).to eql(nil)
+      expect(rb_tree.lower_key(2.3)).to eql(nil)
+      expect(rb_tree.lower_key(4)).to eql(nil)
+      expect(rb_tree.lower_key(5)).to eql(4)
+      expect(rb_tree.lower_key(100)).to eql(4)
+    end
+
+    it "returns lower value for a tree with no element" do
+      rb_tree = RedBlackTree.new
+      expect(rb_tree.lower_key(1)).to eql(nil)
+      expect(rb_tree.lower_key(2.3)).to eql(nil)
+      expect(rb_tree.lower_key(4)).to eql(nil)
+      expect(rb_tree.lower_key(100)).to eql(nil)
+    end
   end
 
   describe "#flooring_key" do
@@ -99,6 +117,22 @@ RSpec.describe RedBlackTree do
       expect(rb_tree.flooring_key(100)).to eql(6)
       expect(rb_tree.flooring_key(6)).to eql(6)
     end
+
+    it "returns flooring key for a tree with one element" do
+      rb_tree = RedBlackTree.new
+      rb_tree.insert(Node.new(4))
+      expect(rb_tree.flooring_key(1)).to eql(nil)
+      expect(rb_tree.flooring_key(2.3)).to eql(nil)
+      expect(rb_tree.flooring_key(4)).to eql(4)
+      expect(rb_tree.flooring_key(0.5)).to eql(nil)
+      expect(rb_tree.flooring_key(100)).to eql(4)
+    end
+
+    it "returns flooring key for a tree with no elements" do
+      rb_tree = RedBlackTree.new
+      expect(rb_tree.flooring_key(1)).to eql(nil)
+      expect(rb_tree.flooring_key(4)).to eql(nil)
+    end
   end
 
   describe "#higher_key" do
@@ -135,6 +169,21 @@ RSpec.describe RedBlackTree do
       expect(rb_tree.higher_key(10)).to eql(nil)
       expect(rb_tree.higher_key(6)).to eql(nil)
     end
+
+    it "returns higher key for a tree with one element" do
+      rb_tree = RedBlackTree.new
+      rb_tree.insert(Node.new(4))
+      expect(rb_tree.higher_key(1)).to eql(4)
+      expect(rb_tree.higher_key(4)).to eql(nil)
+      expect(rb_tree.higher_key(4.1)).to eql(nil)
+      expect(rb_tree.higher_key(5)).to eql(nil)
+    end
+
+    it "returns ceiling key for a tree with no elements" do
+      rb_tree = RedBlackTree.new
+      expect(rb_tree.ceiling_key(1)).to eql(nil)
+      expect(rb_tree.ceiling_key(4)).to eql(nil)
+    end
   end
 
   describe "#ceiling_key" do
@@ -170,6 +219,21 @@ RSpec.describe RedBlackTree do
       expect(rb_tree.ceiling_key(4.1)).to eql(5)
       expect(rb_tree.ceiling_key(5)).to eql(5)
       expect(rb_tree.ceiling_key(6)).to eql(nil)
+    end
+
+    it "returns ceiling key for a tree with one element" do
+      rb_tree = RedBlackTree.new
+      rb_tree.insert(Node.new(4))
+      expect(rb_tree.ceiling_key(1)).to eql(4)
+      expect(rb_tree.ceiling_key(4)).to eql(4)
+      expect(rb_tree.ceiling_key(4.1)).to eql(nil)
+      expect(rb_tree.ceiling_key(5)).to eql(nil)
+    end
+
+    it "returns ceiling key for a tree with no elements" do
+      rb_tree = RedBlackTree.new
+      expect(rb_tree.ceiling_key(1)).to eql(nil)
+      expect(rb_tree.ceiling_key(4)).to eql(nil)
     end
   end
 

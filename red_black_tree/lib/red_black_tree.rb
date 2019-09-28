@@ -183,7 +183,7 @@ class RedBlackTree
     return nil if root == nil_node
     return nil unless [:<, :<=, :>, :>=].include?(op)
     key_order, first_child, second_child  = ([:>, :>=].include?(op)) ? [:lower, :left, :right] : [:higher, :right, :left]
-    return (key.send(op, root.key) ? nil : root.key) if root.has_no_children?
+    return (key.send(op, root.key) ? root.key : nil) if root.has_no_children?
 
     node = root
     while(node) do
