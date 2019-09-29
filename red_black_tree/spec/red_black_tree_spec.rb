@@ -15,9 +15,27 @@ RSpec.describe RedBlackTree do
     end
   end
 
+  describe "#minimum" do
+    it "returns minimum key in the tree" do
+      expect(red_black_tree.minimum.key).to eql(1)
+    end
+  end
+
+  describe "#maximum" do
+    it "returns maximum key in the tree" do
+      expect(red_black_tree.maximum.key).to eql(9)
+    end
+  end
+
   describe "#tree_minimum" do
-    it "returns minimum value in the tree" do
-      expect(red_black_tree.tree_minimum(red_black_tree.root).key).to eql(1)
+    it "returns minimum key at sub-tree" do
+      expect(red_black_tree.send(:tree_minimum,red_black_tree.root).key).to eql(1)
+    end
+  end
+
+  describe "#tree_maximum" do
+    it "returns maximum key at sub-tree" do
+      expect(red_black_tree.send(:tree_maximum, red_black_tree.root).key).to eql(9)
     end
   end
 
@@ -66,11 +84,5 @@ RSpec.describe RedBlackTree do
       expect(rb_tree.contains?(100)).to eql(false)
     end
 
-  end
-
-  describe "#tree_maximum" do
-    it "returns maximum value in the tree" do
-      expect(red_black_tree.tree_maximum(red_black_tree.root).key).to eql(9)
-    end
   end
 end
