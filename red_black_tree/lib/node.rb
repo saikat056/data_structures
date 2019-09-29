@@ -1,7 +1,8 @@
 class Node
-  attr_accessor :color, :key, :left, :right, :p
-  def initialize(k)
+  attr_accessor :color, :key, :value, :left, :right, :p
+  def initialize(k, v = nil)
     @key = k
+    @value = v
   end
   
   def has_no_children?

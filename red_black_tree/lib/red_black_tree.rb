@@ -21,30 +21,29 @@ class RedBlackTree
     inorder_recur(x.right, arr) if x.right != nil_node
   end
 
-  def tree_minimum(x)
-    x = x.left while x.left != nil_node
-    x
+  def minimum
+    tree_minimum(root)
   end
 
-  def tree_maximum(x)
-    x = x.right while x.right != nil_node
-    x
+  def maximum
+    tree_maximum(root)
   end
 
-  def flooring_key(key)
-    find_key_with_operator(key, :>=)
+  def insert_key(key, value=nil)
+    insert(Node.new(key, value))
   end
 
-  def lower_key(key)
-    find_key_with_operator(key, :>)
+  def contains?(key)
+    find_key(key) != nil
   end
 
-  def ceiling_key(key)
-    find_key_with_operator(key, :<=)
-  end
-
-  def higher_key(key)
-    find_key_with_operator(key, :<)
+  def find_key(key)
+    node = root
+    while(node != nil_node)
+      return node if node.key == key
+      node = (key < node.key) ? node.left : node.right
+    end
+    nil
   end
 
   def insert(z)
@@ -98,6 +97,16 @@ class RedBlackTree
   end
 
   private
+
+  def tree_minimum(x)
+    x = x.left while x.left != nil_node
+    x
+  end
+
+  def tree_maximum(x)
+    x = x.right while x.right != nil_node
+    x
+  end
 
   def insert_fixup(z)
     while z.p.color == Color::RED
