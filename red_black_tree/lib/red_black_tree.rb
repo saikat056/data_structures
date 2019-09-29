@@ -31,20 +31,21 @@ class RedBlackTree
     x
   end
 
-  def flooring_key(key)
-    find_key_with_operator(key, :>=)
+  def insert_key(key, value=nil)
+    insert(Node.new(key, value))
   end
 
-  def lower_key(key)
-    find_key_with_operator(key, :>)
+  def contains?(key)
+    find_key(key) != nil
   end
 
-  def ceiling_key(key)
-    find_key_with_operator(key, :<=)
-  end
-
-  def higher_key(key)
-    find_key_with_operator(key, :<)
+  def find_key(key)
+    node = root
+    while(node != nil_node)
+      return node if node.key == key
+      node = (key < node.key) ? node.left : node.right
+    end
+    nil
   end
 
   def insert(z)
