@@ -1,9 +1,13 @@
 class Heap
   attr_reader :heap_size, :operator
-  def initialize(array, operator=:>)
+  def initialize(array=[], operator=:>)
     @array = array
     @heap_size = array.size
     @operator = operator
+  end
+  
+  def empty?
+    @heap_size == 0
   end
 
   def parent(index)
