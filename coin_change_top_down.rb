@@ -25,3 +25,5 @@ def make_coin_change(coins, amount, coin_hash)
   coin_hash[amount] = min_change == nil ? -1 : min_change
   coin_hash[amount]
 end
+
+puts coin_change([1,5,10], 20)
