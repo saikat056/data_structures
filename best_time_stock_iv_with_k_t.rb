@@ -29,8 +29,7 @@ def max_profit(k, prices)
        val = [dp[i], val + prices[i] - prices[i-1]].max
        dp[i] = [dp[i-1], val].max
     end
-    
   end
   
-  dp
+  dp[-1]
 end
