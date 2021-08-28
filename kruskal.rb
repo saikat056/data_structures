@@ -87,3 +87,34 @@ T = O(|E| log |E|)
 # Test
 edges = []
 vertices = []
+
+
+
+
+edges = [[4,5, 10],[5, 8, 5],[4, 6, 4], [6, 8, 1], [8, 3, 10], [7,8,2], [6,7,3], [1,6,3], [1,2,5]]
+vertices = [1,2,3,4,5,6,7,8]
+
+def kruskal(edges, vertices)
+  h = {}
+  
+  vertices.each { |v| h[v] = Set[v] }
+  
+  edges.sort_by! { |x| x[2] }
+  
+  res = []
+  
+  edges.each do |e|
+    u = e[0]
+    v = e[1]
+    
+    if (h[u] & h[v]).empty?
+      s = h[u] | h[v]
+      h[u] = h[v] = s
+      res << e
+    end
+  end
+  
+  res
+  
+end
+

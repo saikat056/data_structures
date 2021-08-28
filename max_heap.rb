@@ -6,7 +6,7 @@ class Node
   end
 end
 
-class MinHeap
+class MaxHeap
   def initialize
     @arr = [nil]
     @hash = {}
@@ -19,13 +19,13 @@ class MinHeap
 
   alias_method :<<, :push
 
-  def min
+  def max
     return nil if @arr.size <= 1
 
     @arr[1].val
   end
 
-  def min_node
+  def max_node
     return nil if @arr.size <= 1
     
     @arr[1]
@@ -42,20 +42,21 @@ class MinHeap
   def pop
     return nil if @arr.size <= 1
     
-    min  = @arr[1]
+    max  = @arr[1]
     @arr[1], @arr[-1] = [@arr[- 1], @arr[1]]
     @hash[@arr[1]] = 1
-    @hash.delete(min)
+    @hash.delete(max)
     @arr.pop
-    @v_to_node[min.val].delete(min)
+    @v_to_node[max.val].delete(max)
 
-    if @v_to_node[min.val].empty?
-      @v_to_node.delete(min.val)
+
+    if @v_to_node[max.val].empty?
+      @v_to_node.delete(max.val)
     end
 
-    min_heapify(1) if size > 0
+    max_heapify(1) if size > 0
     
-    min.val
+    max.val
   end
 
   def delete(val)
@@ -76,7 +77,7 @@ class MinHeap
     @hash.delete(node)
     @arr.pop
 
-    min_heapify(1) if size > 0
+    max_heapify(1) if size > 0
 
     node.val
   end
@@ -85,15 +86,15 @@ class MinHeap
     val = node.val.dup
 
     if val.is_a?(Array)
-      node.val[0] = Float::INFINITY
+      node.val[0] = -Float::INFINITY
     else
-      node.val = Float::INFINITY
+      node.val = -Float::INFINITY
     end
 
     @arr << node
     @hash[node] = @arr.size - 1
     
-    decrease_val(node, val)
+    increase_val(node, val)
   end
   
   private
@@ -110,30 +111,30 @@ class MinHeap
     (2 * i) + 1
   end
   
-  def min_heapify(i)
-    lowest = i
+  def max_heapify(i)
+    highest = i
 
     if @arr[i].val.is_a?(Array)
-      lowest = (@arr[i].val[0] <= @arr[left(i)].val[0]) ? i : left(i) if left(i) < @arr.size
-      lowest = (@arr[lowest].val[0] <= @arr[right(i)].val[0]) ? lowest : right(i) if right(i) < @arr.size
+      highest = (@arr[i].val[0] >= @arr[left(i)].val[0]) ? i : left(i) if left(i) < @arr.size
+      highest = (@arr[highest].val[0] >= @arr[right(i)].val[0]) ? highest : right(i) if right(i) < @arr.size
     else
-      lowest = (@arr[i].val <= @arr[left(i)].val) ? i : left(i) if left(i) < @arr.size
-      lowest = (@arr[lowest].val <= @arr[right(i)].val) ? lowest : right(i) if right(i) < @arr.size
+      highest = (@arr[i].val >= @arr[left(i)].val) ? i : left(i) if left(i) < @arr.size
+      highest = (@arr[highest].val >= @arr[right(i)].val) ? highest : right(i) if right(i) < @arr.size
     end
     
-    if(lowest != i)
-      @arr[i], @arr[lowest] = [@arr[lowest], @arr[i]]
+    if(highest != i)
+      @arr[i], @arr[highest] = [@arr[highest], @arr[i]]
       @hash[@arr[i]] = i
-      @hash[@arr[lowest]] = lowest
-      min_heapify(lowest)
+      @hash[@arr[highest]] = highest
+      max_heapify(highest)
     end
   end
   
-  def decrease_val(node, val)
+  def increase_val(node, val)
     if val.is_a?(Array)
-      return 'val is greater than node->val' if val[0] > node.val[0]
+      return 'val is less than node->val' if val[0] < node.val[0]
     else
-      return 'val is greater than node->val' if val > node.val
+      return 'val is less than node->val' if val < node.val
     end
     
     node.val = val
@@ -142,14 +143,14 @@ class MinHeap
     greater = false
     
     if val.is_a?(Array)
-      greater = @arr[parent(index)].nil? ? false : (@arr[parent(index)].val[0] > @arr[index].val[0])
+      greater = @arr[parent(index)].nil? ? false : (@arr[parent(index)].val[0] < @arr[index].val[0])
     else
-      greater = @arr[parent(index)].nil? ? false : (@arr[parent(index)].val > @arr[index].val)
+      greater = @arr[parent(index)].nil? ? false : (@arr[parent(index)].val < @arr[index].val)
     end
 
     while (index > 1) && greater do
       index = parent(index)
-      min_heapify(index)
+      max_heapify(index)
     end
 
     @v_to_node[node.val] ||= []
