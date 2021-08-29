@@ -1,0 +1,382 @@
+class Node
+  attr_accessor :val
+
+  def initialize(v)
+    @val = v
+  end
+end
+
+class MinHeap1
+  def initialize
+    @arr = [nil]
+    @hash = {}
+    @v_to_node = {}
+  end
+
+  def push(v)
+    insert(Node.new(v))
+  end
+
+  alias_method :<<, :push
+
+  def min
+    return nil if @arr.size <= 1
+
+    @arr[1].val
+  end
+
+  def min_node
+    return nil if @arr.size <= 1
+    
+    @arr[1]
+  end
+  
+  def size
+    @arr.size - 1
+  end
+  
+  def empty?
+    size == 0
+  end
+  
+  def pop
+    return nil if @arr.size <= 1
+    
+    min  = @arr[1]
+    @arr[1], @arr[-1] = [@arr[- 1], @arr[1]]
+    @hash[@arr[1]] = 1
+    @hash.delete(min)
+    @arr.pop
+    @v_to_node[min.val].delete(min)
+
+    if @v_to_node[min.val].empty?
+      @v_to_node.delete(min.val)
+    end
+
+    min_heapify(1) if size > 0
+    
+    min.val
+  end
+
+  def delete(val)
+    return nil if @v_to_node[val].nil? || @v_to_node[val].empty?
+
+    node = @v_to_node[val].pop
+
+    if @v_to_node[val].empty?
+      @v_to_node.delete(val)
+    end
+
+    return nil if node.nil?
+
+    index = @hash[node]
+
+    @arr[index], @arr[-1] = [@arr[- 1], @arr[index]]
+    @hash[@arr[index]] = index
+    @hash.delete(node)
+    @arr.pop
+
+    min_heapify(1) if size > 0
+
+    node.val
+  end
+
+  def insert(node)
+    val = node.val.dup
+
+    if val.is_a?(Array)
+      node.val[0] = Float::INFINITY
+    else
+      node.val = Float::INFINITY
+    end
+
+    @arr << node
+    @hash[node] = @arr.size - 1
+    
+    decrease_val(node, val)
+  end
+  
+  private
+  
+  def parent(i)
+    i/2
+  end
+  
+  def left(i)
+    2 * i
+  end
+  
+  def right(i)
+    (2 * i) + 1
+  end
+  
+  def min_heapify(i)
+    lowest = i
+
+    if @arr[i].val.is_a?(Array)
+      lowest = (@arr[i].val[0] <= @arr[left(i)].val[0]) ? i : left(i) if left(i) < @arr.size
+      lowest = (@arr[lowest].val[0] <= @arr[right(i)].val[0]) ? lowest : right(i) if right(i) < @arr.size
+    else
+      lowest = (@arr[i].val <= @arr[left(i)].val) ? i : left(i) if left(i) < @arr.size
+      lowest = (@arr[lowest].val <= @arr[right(i)].val) ? lowest : right(i) if right(i) < @arr.size
+    end
+    
+    if(lowest != i)
+      @arr[i], @arr[lowest] = [@arr[lowest], @arr[i]]
+      @hash[@arr[i]] = i
+      @hash[@arr[lowest]] = lowest
+      min_heapify(lowest)
+    end
+  end
+  
+  def decrease_val(node, val)
+    if val.is_a?(Array)
+      return 'val is greater than node->val' if val[0] > node.val[0]
+    else
+      return 'val is greater than node->val' if val > node.val
+    end
+    
+    node.val = val
+    index  = @hash[node]
+    
+    greater = false
+    
+    if val.is_a?(Array)
+      greater = @arr[parent(index)].nil? ? false : (@arr[parent(index)].val[0] > @arr[index].val[0])
+    else
+      greater = @arr[parent(index)].nil? ? false : (@arr[parent(index)].val > @arr[index].val)
+    end
+
+    while (index > 1) && greater do
+      index = parent(index)
+      min_heapify(index)
+    end
+
+    @v_to_node[node.val] ||= []
+    @v_to_node[node.val] << node
+  end
+end
+
+class MaxHeap1
+  def initialize
+    @arr = [nil]
+    @hash = {}
+    @v_to_node = {}
+  end
+
+  def push(v)
+    insert(Node.new(v))
+  end
+
+  alias_method :<<, :push
+
+  def max
+    return nil if @arr.size <= 1
+
+    @arr[1].val
+  end
+
+  def max_node
+    return nil if @arr.size <= 1
+    
+    @arr[1]
+  end
+  
+  def size
+    @arr.size - 1
+  end
+  
+  def empty?
+    size == 0
+  end
+  
+  def pop
+    return nil if @arr.size <= 1
+    
+    max  = @arr[1]
+    @arr[1], @arr[-1] = [@arr[- 1], @arr[1]]
+    @hash[@arr[1]] = 1
+    @hash.delete(max)
+    @arr.pop
+    @v_to_node[max.val].delete(max)
+
+
+    if @v_to_node[max.val].empty?
+      @v_to_node.delete(max.val)
+    end
+
+    max_heapify(1) if size > 0
+    
+    max.val
+  end
+
+  def delete(val)
+    return nil if @v_to_node[val].nil? || @v_to_node[val].empty?
+
+    node = @v_to_node[val].pop
+
+    if @v_to_node[val].empty?
+      @v_to_node.delete(val)
+    end
+
+    return nil if node.nil?
+
+    index = @hash[node]
+
+    @arr[index], @arr[-1] = [@arr[- 1], @arr[index]]
+    @hash[@arr[index]] = index
+    @hash.delete(node)
+    @arr.pop
+
+    max_heapify(1) if size > 0
+
+    node.val
+  end
+
+  def insert(node)
+    val = node.val.dup
+
+    if val.is_a?(Array)
+      node.val[0] = -Float::INFINITY
+    else
+      node.val = -Float::INFINITY
+    end
+
+    @arr << node
+    @hash[node] = @arr.size - 1
+    
+    increase_val(node, val)
+  end
+  
+  private
+  
+  def parent(i)
+    i/2
+  end
+  
+  def left(i)
+    2 * i
+  end
+  
+  def right(i)
+    (2 * i) + 1
+  end
+  
+  def max_heapify(i)
+    highest = i
+
+    if @arr[i].val.is_a?(Array)
+      highest = (@arr[i].val[0] >= @arr[left(i)].val[0]) ? i : left(i) if left(i) < @arr.size
+      highest = (@arr[highest].val[0] >= @arr[right(i)].val[0]) ? highest : right(i) if right(i) < @arr.size
+    else
+      highest = (@arr[i].val >= @arr[left(i)].val) ? i : left(i) if left(i) < @arr.size
+      highest = (@arr[highest].val >= @arr[right(i)].val) ? highest : right(i) if right(i) < @arr.size
+    end
+    
+    if(highest != i)
+      @arr[i], @arr[highest] = [@arr[highest], @arr[i]]
+      @hash[@arr[i]] = i
+      @hash[@arr[highest]] = highest
+      max_heapify(highest)
+    end
+  end
+  
+  def increase_val(node, val)
+    if val.is_a?(Array)
+      return 'val is less than node->val' if val[0] < node.val[0]
+    else
+      return 'val is less than node->val' if val < node.val
+    end
+    
+    node.val = val
+    index  = @hash[node]
+    
+    greater = false
+    
+    if val.is_a?(Array)
+      greater = @arr[parent(index)].nil? ? false : (@arr[parent(index)].val[0] < @arr[index].val[0])
+    else
+      greater = @arr[parent(index)].nil? ? false : (@arr[parent(index)].val < @arr[index].val)
+    end
+
+    while (index > 1) && greater do
+      index = parent(index)
+      max_heapify(index)
+    end
+
+    @v_to_node[node.val] ||= []
+    @v_to_node[node.val] << node
+  end
+end
+
+
+# @param {Integer[]} nums
+# @param {Integer} k
+# @return {Float[]}
+def median_sliding_window(nums, k)
+  arr = nums
+  lo = MaxHeap1.new
+  hi = MinHeap1.new
+  
+  i = 0
+  k.times do
+    lo << arr[i]
+    i += 1
+  end
+  
+  (k/2).times do
+    hi << lo.pop
+  end
+  
+  res = []
+  
+  i = 0
+  j = k
+  
+  while j < arr.size do
+    res << cal_mean(lo, hi)
+    
+    if !lo.max.nil? && arr[i] <= lo.max
+      lo.delete(arr[i])
+    else
+      hi.delete(arr[i])  
+    end
+    
+    if !lo.max.nil? && arr[j] <= lo.max
+      lo << arr[j]
+    else
+      hi << arr[j] 
+    end
+   
+    balance(lo, hi)
+    
+    i += 1
+    j += 1
+  end
+  
+  res << cal_mean(lo, hi)
+  
+  res
+end
+
+def cal_mean(lo, hi)
+  if lo.size == hi.size
+    return (lo.max.to_f + hi.min.to_f)/2
+  else
+    if lo.size > hi.size
+      return lo.max.to_f
+    else
+      return hi.min.to_f
+    end
+  end
+end
+
+def balance(lo, hi)
+  while ((lo.size - hi.size).abs > 1) do
+    if lo.size > hi.size
+      hi << lo.pop
+    else
+      lo << hi.pop
+    end
+  end
+end
