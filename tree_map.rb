@@ -166,7 +166,7 @@ class TreeMap
     put_internal(key, value)
   end
 
-  alias_method :put, :push
+  alias put push
 
   def clear
     @root = nil
@@ -179,7 +179,7 @@ class TreeMap
     node.value if node
   end
 
-  alias_method :delete, :remove
+  alias delete remove
 
   def put_internal(key, value)
     created = find(key, Relation::CREATE)
