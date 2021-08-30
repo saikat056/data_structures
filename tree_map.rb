@@ -1,3 +1,20 @@
+# m = TreeMap.new
+# m.push(5,'a')
+# m.push(7,'b')
+# m.push(3,'c')
+# m.push(1,'d')
+# m.push(10,'e')
+# m.to_a
+# => [[1, "d"], [3, "c"], [5, "a"], [7, "b"], [10, "e"]]
+# m.lower_key(4)
+# => 3
+# m.higher_key(4)
+# => 5
+# m.floor_key(4)
+# => 3
+# m.sub_map(5, 11).to_a
+# => [[5, "a"], [7, "b"], [10, "e"]]
+
 class TreeMap
   include Enumerable
 
