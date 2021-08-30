@@ -166,7 +166,7 @@ class TreeMap
     put_internal(key, value)
   end
 
-  alias put push
+  alias push put
 
   def clear
     @root = nil
