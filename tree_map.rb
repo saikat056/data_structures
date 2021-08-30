@@ -15,6 +15,13 @@
 # m.sub_map(5, 11).to_a
 # => [[5, "a"], [7, "b"], [10, "e"]]
 
+# m.tail_map(5).to_a
+# => [[5, "a"], [7, "b"], [10, "e"]]
+# m.to_a
+# => [[1, "d"], [3, "c"], [5, "a"], [7, "b"], [10, "e"]]
+# m.head_map(5).to_a
+# => [[1, "d"], [3, "c"]]
+
 class TreeMap
   include Enumerable
 
