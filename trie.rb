@@ -46,6 +46,9 @@ class Trie
     char_stack = []
     suffixes = []
     find_all_suffixes(base, char_stack, suffixes)
+
+    return [prefix] if suffixes.empty?
+
     suffixes.map{|suffix| [prefix, suffix].join}
   end
 
