@@ -169,13 +169,26 @@ def minmax_gas_dist(stations, k)
   n = stations.size
     
   (1..(n - 1)).each do |i|
-     m << stations[i] - stations[i-1]
+     d = stations[i] - stations[i-1]
+     m << [d, 0, i]
   end
 
-  k.times do
+  p = 0
+  while p < k do
     x = m.pop
-    m << x.to_f/2
+    next_max = m.max[0]
+    i = x[2]
+    d = stations[i] - stations[i - 1]
+    assigned = x[1]
+    
+    while (p < k) && (d >= next_max) do
+      assigned += 1
+      p += 1
+      d = (stations[i] - stations[i - 1]).to_f/(assigned + 1)
+    end
+    
+    m << [d, assigned, i]
   end
   
-  m.max
+  m.max[0]
 end
