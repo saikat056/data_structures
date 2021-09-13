@@ -13,22 +13,18 @@ def sqaure_root(num, precision)
 
   ans = 0
 
-  # O(log(num))
-  while start <= stop
-    mid = (start + stop) / 2
-
-    if (mid * mid) == num
-      ans = mid
-      break
-    end
-
-    if mid * mid < num
+  # O(log(num))  
+  while start < stop do
+    mid = (start + stop)/2
+      
+    if num > mid*mid
       start = mid + 1
-      ans = mid
     else
-      stop = mid - 1
+      stop = mid
     end
   end
+  
+  ans = (start*start == num) ? start : (start - 1)
 
   # O(1)
   p = 0.1
