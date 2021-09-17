@@ -12,7 +12,9 @@ def ceil(arr, target)
   while low < high do
     mid = (low + high) / 2
     
-    if target > arr[mid]
+    if target == arr[mid]
+      return mid
+    elsif target > arr[mid]
       low = mid + 1
     else
       high = mid
@@ -46,15 +48,17 @@ def floor(arr, target)
   
   while low < high do
     mid = (low + high) / 2
-    
-    if target > arr[mid]
+
+    if target == arr[mid]
+      return mid   
+    elsif target > arr[mid]
       low = mid + 1
     else
       high = mid
     end
   end
   
-  low -= 1 if target != arr[low]
+  low -= 1
   
   [low, arr[low]]
 end
@@ -66,7 +70,10 @@ def lower_key(arr, target)
   while low < high do
     mid = (low + high) / 2
     
-    if target > arr[mid]
+    if target == arr[mid]
+      low = mid
+      break
+    elsif target > arr[mid]
       low = mid + 1
     else
       high = mid
