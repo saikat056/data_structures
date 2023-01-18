@@ -1,6 +1,6 @@
 # Given an array of numbers sorted in an ascending order, find the ceiling of a given number key. The ceiling of the key will be the smallest element in the given array greater than or equal to the key.
 
-def ceiling(nums, key):
+def floor(nums, key):
     if key > nums[-1]: return -1
 
     n = len(nums)
